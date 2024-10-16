@@ -22,8 +22,8 @@ function createPost(id) {
             ${id}の投稿です。「いいね」をクリックして、Vanilla JS、jQueryの速度を体感してください！
         </div>
         <div class="post-actions">
-            <button class="like-button">Like</button>
-            <span class="like-count">$いいね数 : {likeCount}</span>
+            <button class="like-button">いいね</button>
+            <span class="like-count">いいね数 : ${likeCount}</span>
         </div>
     `;
   return postDiv;
