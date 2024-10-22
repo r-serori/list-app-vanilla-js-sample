@@ -16,14 +16,14 @@ function createPost(id) {
   postDiv.innerHTML = `
         <div class="post-header">
             <div class="post-avatar"></div>
-            <div class="post-username">User ${id}</div>
+            <div class="post-username">ユーザー ${id}</div>
         </div>
         <div class="post-content">
-            This is the content of post ${id}. It's a simple post for demonstration purposes.
+          ${id}つ目の投稿。<br/>いいねをクリックし、Vanilla JS, jQueryの速度を体感してください!
         </div>
         <div class="post-actions">
-            <button class="like-button">Like</button>
-            <span class="like-count">${likeCount} likes</span>
+            <button class="like-button">いいね</button>
+            <span class="like-count">${likeCount} いいね</span>
         </div>
     `;
   return postDiv;
