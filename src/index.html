@@ -3,12 +3,81 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JavaScript SNS いいねのサンプル</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>Vanilla JS DOM操作デモ</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .item {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        transition: all 0.3s ease; /* スムーズな変化のためのトランジション */
+      }
+      .item.updated {
+        background-color: lightblue;
+        font-size: 20px;
+        padding: 20px;
+        height: 100px;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+    </style>
   </head>
   <body>
-    <div id="app"></div>
+    <div class="container">
+      <h1>リストのパフォーマンステスト</h1>
+      <div id="item-list"></div>
+    </div>
 
-    <script src="./index.mjs" type="module"></script>
+    <script>
+      // リストに表示するデータ数
+      const totalItems = 1000;
+
+      // 初期のリストデータを作成する関数
+      function createListItems() {
+        const itemList = document.getElementById("item-list");
+        itemList.innerHTML = ""; // 初期化
+
+        for (let i = 1; i <= totalItems; i++) {
+          const item = document.createElement("div");
+          item.className = "item";
+          item.innerHTML = `
+                <span>Item ${i}</span>
+                <button class="update-btn">更新</button>
+            `;
+          itemList.appendChild(item);
+        }
+      }
+
+      let updateCount = 1; // 更新回数を追跡する変数
+
+      // 全てのリスト項目を更新する関数
+      function updateList() {
+        const items = document.querySelectorAll(".item");
+        items.forEach((item, index) => {
+          // 各アイテムに "updated" クラスを追加して見た目を変化
+          item.classList.toggle("updated");
+          const textElement = item.querySelector("span");
+          textElement.textContent = `Updated Item ${
+            index + 1
+          } - Updated${updateCount}`;
+        });
+        updateCount++; // 更新ごとにカウントを増やす
+      }
+
+      // イベントリスナーを各ボタンに設定
+      function attachUpdateButtons() {
+        const buttons = document.querySelectorAll(".update-btn");
+        buttons.forEach((button) => {
+          button.addEventListener("click", updateList);
+        });
+      }
+
+      // 初期化
+      createListItems();
+      attachUpdateButtons();
+    </script>
   </body>
 </html>
