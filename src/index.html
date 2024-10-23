@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vanilla JS DOM操作デモ</title>
+    <title>在庫管理システム（Vanilla JS）</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -11,10 +11,10 @@
       .item {
         padding: 10px;
         border-bottom: 1px solid #ddd;
-        transition: all 0.3s ease; /* スムーズな変化のためのトランジション */
+        transition: all 0.3s ease;
       }
-      .item.updated {
-        background-color: lightblue;
+      .in-stock {
+        background-color: lightgreen;
         font-size: 20px;
         padding: 20px;
         height: 100px;
@@ -27,57 +27,56 @@
   </head>
   <body>
     <div class="container">
-      <h1>リストのパフォーマンステスト</h1>
+      <h1>在庫管理システム（従来のDOM）</h1>
+      <button id="update-stock-btn">一気に100個を在庫ありに変更</button>
+      <span id="update-count">更新した数: 0</span>
       <div id="item-list"></div>
     </div>
 
     <script>
-      // リストに表示するデータ数
-      const totalItems = 1000;
+      const totalItems = 10000; // 総商品数
+      let updateCount = 0; // 更新された商品の数
+      let currentIndex = 0; // 現在のインデックス
 
-      // 初期のリストデータを作成する関数
-      function createListItems() {
+      // 商品リストを初期化
+      function createItemList() {
         const itemList = document.getElementById("item-list");
-        itemList.innerHTML = ""; // 初期化
+        itemList.innerHTML = "";
 
         for (let i = 1; i <= totalItems; i++) {
           const item = document.createElement("div");
           item.className = "item";
           item.innerHTML = `
-                <span>Item ${i}</span>
-                <button class="update-btn">更新</button>
-            `;
+            <span>商品 ${i} - 在庫なし</span>
+          `;
           itemList.appendChild(item);
         }
       }
 
-      let updateCount = 1; // 更新回数を追跡する変数
-
-      // 全てのリスト項目を更新する関数
-      function updateList() {
+      // 一気に100個在庫ありに変更する関数
+      function updateStockStatus() {
         const items = document.querySelectorAll(".item");
-        items.forEach((item, index) => {
-          // 各アイテムに "updated" クラスを追加して見た目を変化
-          item.classList.toggle("updated");
-          const textElement = item.querySelector("span");
-          textElement.textContent = `Updated Item ${
-            index + 1
-          } - Updated${updateCount}`;
-        });
-        updateCount++; // 更新ごとにカウントを増やす
-      }
+        const limit = currentIndex + 100; // 100個まで更新
 
-      // イベントリスナーを各ボタンに設定
-      function attachUpdateButtons() {
-        const buttons = document.querySelectorAll(".update-btn");
-        buttons.forEach((button) => {
-          button.addEventListener("click", updateList);
-        });
+        for (let i = currentIndex; i < limit && i < totalItems; i++) {
+          const item = items[i];
+          item.classList.add("in-stock");
+          const textElement = item.querySelector("span");
+          textElement.textContent = `商品 ${i + 1} - 在庫あり`;
+        }
+
+        currentIndex += 100; // 更新した商品の数をインクリメント
+        updateCount += Math.min(100, totalItems - currentIndex);
+        document.getElementById(
+          "update-count"
+        ).textContent = `更新した数: ${currentIndex}`;
       }
 
       // 初期化
-      createListItems();
-      attachUpdateButtons();
+      createItemList();
+      document
+        .getElementById("update-stock-btn")
+        .addEventListener("click", updateStockStatus);
     </script>
   </body>
 </html>
