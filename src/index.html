@@ -29,6 +29,7 @@
     <div class="container">
       <h1>在庫管理システム（従来のDOM）</h1>
       <button id="update-stock-btn">一気に100個を在庫ありに変更</button>
+      <button id="reset-stock-btn">全ての在庫を「なし」にリセット</button>
       <span id="update-count">更新した数: 0</span>
       <div id="item-list"></div>
     </div>
@@ -72,11 +73,33 @@
         ).textContent = `更新した数: ${currentIndex}`;
       }
 
+      // 全ての在庫を「なし」にリセットする関数
+      function resetStockStatus() {
+        const items = document.querySelectorAll(".item");
+
+        for (let i = 0; i < totalItems; i++) {
+          const item = items[i];
+          item.classList.remove("in-stock"); // クラスを削除
+          const textElement = item.querySelector("span");
+          textElement.textContent = `商品 ${i + 1} - 在庫なし`; // テキストを「在庫なし」に変更
+        }
+
+        // カウンタをリセット
+        updateCount = 0;
+        currentIndex = 0;
+        document.getElementById("update-count").textContent = `更新した数: 0`;
+      }
+
       // 初期化
       createItemList();
       document
         .getElementById("update-stock-btn")
         .addEventListener("click", updateStockStatus);
+
+      // リセットボタンのイベントリスナーを追加
+      document
+        .getElementById("reset-stock-btn")
+        .addEventListener("click", resetStockStatus);
     </script>
   </body>
 </html>
